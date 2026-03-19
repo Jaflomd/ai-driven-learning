@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Driven Learning | Dr. Javier Flores-Cohaila</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+        :root {
+            --gold: #D4A853;
+            --gold-light: #E8C97A;
+            --gold-dark: #B8902F;
+            --gold-glow: rgba(212, 168, 83, 0.3);
+            --bg-primary: #0A0A0F;
+            --bg-secondary: #12121A;
+            --bg-card: #1A1A25;
+            --bg-card-hover: #22222F;
+            --text-primary: #F0EDE6;
+            --text-secondary: #9A9AAF;
+            --text-muted: #6A6A7F;
+            --border: rgba(212, 168, 83, 0.15);
+            --border-hover: rgba(212, 168, 83, 0.4);
+            --accent-cyber: #00F0FF;
+            --accent-cyber-dim: rgba(0, 240, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* === GRAIN OVERLAY === */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* === LAYOUT === */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        /* === HERO === */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 32px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 .gold {
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 40px;
+            font-weight: 300;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat .number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .hero-stat .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* === CTA BUTTON === */
+        .cta-btn {
+            display: inline-block;
+            padding: 18px 48px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--bg-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px var(--gold-glow);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px var(--gold-glow), 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        .cta-btn-secondary {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            box-shadow: none;
+        }
+
+        .cta-btn-secondary:hover {
+            background: rgba(212, 168, 83, 0.1);
+            box-shadow: 0 0 30px var(--gold-glow);
+        }
+
+        .cta-price {
+            display: block;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* === DIVIDER === */
+        .divider {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0 auto 60px;
+        }
+
+        /* === PROBLEM SECTION === */
+        .problem {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .problem h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .problem-list {
+            list-style: none;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .problem-list li {
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .problem-list li::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 50%;
+            margin-top: 10px;
+            flex-shrink: 0;
+        }
+
+        .problem-list li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* === RETOS === */
+        .retos h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .retos-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 60px;
+            font-size: 1.1rem;
+        }
+
+        .reto-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reto-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--gold), transparent);
+        }
+
+        .reto-card:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
+
+        .reto-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .reto-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .reto-desc {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .reto-items {
+            list-style: none;
+        }
+
+        .reto-items li {
+            padding: 6px 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .reto-items li::before {
+            content: '>';
+            color: var(--gold);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .reto-live {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: var(--accent-cyber-dim);
+            border-left: 2px solid var(--accent-cyber);
+            border-radius: 0 4px 4px 0;
+            font-size: 0.85rem;
+        }
+
+        .reto-live-label {
+            color: var(--accent-cyber);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .reto-live p {
+            color: var(--text-secondary);
+        }
+
+        /* === WHAT YOU GET === */
+        .includes {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .includes h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .includes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .include-item {
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 6px;
+            background: var(--bg-card);
+        }
+
+        .include-item h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            color: var(--gold-light);
+        }
+
+        .include-item p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* === PRICING === */
+        .pricing {
+            text-align: center;
+        }
+
+        .pricing h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 16px;
+        }
+
+        .pricing-sub {
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            max-width: 700px;
+            margin: 0 auto 48px;
+        }
+
+        .price-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 40px 32px;
+            text-align: left;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .price-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .price-card.featured {
+            border-color: var(--gold);
+            box-shadow: 0 0 40px var(--gold-glow);
+        }
+
+        .price-card.featured::after {
+            content: 'RECOMENDADO';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--bg-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            padding: 4px 16px;
+            border-radius: 100px;
+            font-weight: 700;
+        }
+
+        .price-tier {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .price-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .price-amount .currency {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            vertical-align: super;
+        }
+
+        .price-period {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .price-features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .price-features li {
+            padding: 8px 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .price-features li::before {
+            content: '+';
+            color: var(--gold);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .price-card .cta-btn {
+            width: 100%;
+            text-align: center;
+            padding: 14px 24px;
+            font-size: 0.9rem;
+        }
+
+        /* === INSTRUCTOR === */
+        .instructor {
+            text-align: center;
+        }
+
+        .instructor h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 32px;
+        }
+
+        .instructor-info {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .instructor-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .instructor-title {
+            color: var(--gold);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .instructor-bio {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .instructor-creds {
+            list-style: none;
+        }
+
+        .instructor-creds li {
+            padding: 4px 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .instructor-creds li::before {
+            content: '// ';
+            color: var(--gold);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* === FAQ === */
+        .faq h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 24px 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .faq-q {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .faq-a {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* === FINAL CTA === */
+        .final-cta {
+            text-align: center;
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .final-cta h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            margin-bottom: 16px;
+        }
+
+        .final-cta p {
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .urgency {
+            display: inline-block;
+            padding: 10px 24px;
+            border: 1px solid rgba(255, 80, 80, 0.3);
+            border-radius: 4px;
+            color: #FF6B6B;
+            font-size: 0.85rem;
+            margin-bottom: 32px;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        /* === FOOTER === */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            section { padding: 60px 0; }
+            .hero-stats { gap: 24px; }
+            .includes-grid { grid-template-columns: 1fr; }
+            .pricing-cards { grid-template-columns: 1fr; }
+            .reto-card { padding: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge">Cohorte Fundador &mdash; Abril 2026</div>
+        <h1>
+            Domina <span class="gold">Todo Tu Flujo<br>de Estudio</span> con IA
+        </h1>
+        <p class="hero-sub">
+            8 semanas. 4 retos. Un sistema completo de aprendizaje con inteligencia artificial &mdash; desde el prompt hasta tu segundo cerebro.
+        </p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="number">96</div>
+                <div class="label">Alumni del Workshop</div>
+            </div>
+            <div class="hero-stat">
+                <div class="number">4</div>
+                <div class="label">Retos Progresivos</div>
+            </div>
+            <div class="hero-stat">
+                <div class="number">8</div>
+                <div class="label">Semanas</div>
+            </div>
+        </div>
+        <a href="#pricing" class="cta-btn">Asegura Tu Lugar</a>
+        <span class="cta-price">Pre-venta exclusiva para alumni del workshop</span>
+    </div>
+</section>
+
+<!-- ====== PROBLEM ====== -->
+<section class="problem">
+    <div class="container">
+        <h2>El problema que nadie te dice</h2>
+        <ul class="problem-list">
+            <li><strong>Ya usas ChatGPT.</strong> Pero copiar y pegar respuestas no es aprender. Es la ilusión de que estudiaste.</li>
+            <li><strong>No tienes sistema.</strong> Usas 5 herramientas sueltas, ninguna habla con la otra, y cada semana empiezas de cero.</li>
+            <li><strong>Nadie te enseñó a promptear.</strong> Escribes "explícame X" y esperas magia. El 90% del potencial de la IA se pierde en prompts mediocres.</li>
+            <li><strong>No procesas lo que lees.</strong> Lees papers, slides, apuntes... y a las 2 semanas no recuerdas nada. Porque leer no es aprender.</li>
+            <li><strong>Estudias más, no mejor.</strong> Más horas no compensan un método roto. Necesitas un sistema, no más disciplina.</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ====== RETOS ====== -->
+<section class="retos">
+    <div class="container">
+        <h2>4 Retos. Un Sistema Completo.</h2>
+        <p class="retos-subtitle">Cada reto te da una pieza. Al final, tienes la máquina entera.</p>
+
+        <!-- RETO 1 -->
+        <div class="reto-card">
+            <div class="reto-number">Semanas 1-2</div>
+            <h3 class="reto-title">Reto 1: Prompt Engineering</h3>
+            <p class="reto-desc">Entiende cómo piensa la IA. Aprende a hablarle. Maxea tu tutor.</p>
+            <ul class="reto-items">
+                <li>Cómo funciona un LLM (sin matemáticas): por qué responde lo que responde</li>
+                <li>Técnicas clave: few-shot, chain-of-thought, role prompting</li>
+                <li>Personalización avanzada de tu tutor: dificultad, estilo, dominio</li>
+                <li>Stress test: rompe tu tutor a propósito y arregla los prompts</li>
+            </ul>
+            <div class="reto-live">
+                <div class="reto-live-label">Sesión Live</div>
+                <p>"Roast My Tutor" &mdash; Javier critica 3 tutores en vivo. Brutal honesty + fixes inmediatos.</p>
+            </div>
+        </div>
+
+        <!-- RETO 2 -->
+        <div class="reto-card">
+            <div class="reto-number">Semanas 3-4</div>
+            <h3 class="reto-title">Reto 2: Arsenal de Evaluación</h3>
+            <p class="reto-desc">Genera tu propio material de estudio. MCQs, flashcards, autoevaluación.</p>
+            <ul class="reto-items">
+                <li>MCQs inteligentes tipo ENAM/ENARM desde TU material</li>
+                <li>Flashcards con retrieval practice (Anki o manual)</li>
+                <li>Fade-out: tu tutor reduce ayuda a medida que mejoras</li>
+                <li>Autoevaluación dirigida: la IA identifica tus debilidades</li>
+            </ul>
+            <div class="reto-live">
+                <div class="reto-live-label">Sesión Live</div>
+                <p>"MCQ Battle" &mdash; Equipos generan MCQs con sus tutores. Se las hacen al otro equipo. El mejor gana.</p>
+            </div>
+        </div>
+
+        <!-- RETO 3 -->
+        <div class="reto-card">
+            <div class="reto-number">Semanas 5-6</div>
+            <h3 class="reto-title">Reto 3: Procesamiento con IA</h3>
+            <p class="reto-desc">Convierte lectura pasiva en conocimiento activo. Notas, papers, síntesis.</p>
+            <ul class="reto-items">
+                <li>Notas inteligentes con IA: de la lectura pasiva al procesamiento activo</li>
+                <li>Digerir papers: extraer lo esencial, evaluar evidencia, conectar ideas</li>
+                <li>Procesar clases y slides: convertir material en conocimiento usable</li>
+                <li>Resúmenes progresivos con IA como copiloto</li>
+            </ul>
+            <div class="reto-live">
+                <div class="reto-live-label">Sesión Live</div>
+                <p>"Paper Cracker" &mdash; Javier procesa un paper EN VIVO con su flujo real. Tú haces lo mismo con el tuyo.</p>
+            </div>
+        </div>
+
+        <!-- RETO 4 -->
+        <div class="reto-card">
+            <div class="reto-number">Semanas 7-8</div>
+            <h3 class="reto-title">Reto 4: Tu Segundo Cerebro</h3>
+            <p class="reto-desc">Conecta todo en un sistema que funciona solo. Obsidian + IA.</p>
+            <ul class="reto-items">
+                <li>Obsidian + Claude CLI: el setup mínimo para tu segundo cerebro</li>
+                <li>Organiza tus notas de cursos en un solo lugar</li>
+                <li>Conecta tutor + MCQs + notas + papers en UN flujo</li>
+                <li>Rutina diaria de 15-20 minutos que mantiene todo vivo</li>
+            </ul>
+            <div class="reto-live">
+                <div class="reto-live-label">Sesión Live</div>
+                <p>"Showcase" &mdash; Presenta tu segundo cerebro. Métricas de cierre. Certificado.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== INCLUDES ====== -->
+<section class="includes">
+    <div class="container">
+        <h2>Lo que recibes</h2>
+        <div class="includes-grid">
+            <div class="include-item">
+                <h4>4 Sesiones Live</h4>
+                <p>Con Javier. No son clases teóricas &mdash; son sesiones donde se trabaja en vivo.</p>
+            </div>
+            <div class="include-item">
+                <h4>Challenges Async</h4>
+                <p>Retos prácticos que haces a tu ritmo. Sin videos de 3 horas. Hands-on.</p>
+            </div>
+            <div class="include-item">
+                <h4>Grabaciones</h4>
+                <p>Todas las lives grabadas. Si tuviste guardia, ves la grabación.</p>
+            </div>
+            <div class="include-item">
+                <h4>Comunidad Temporal</h4>
+                <p>8 semanas con tu cohorte. Comparte tutores, dudas, resultados.</p>
+            </div>
+            <div class="include-item">
+                <h4>Templates + Prompts</h4>
+                <p>Los prompts reales que usa Javier. No genéricos &mdash; los suyos.</p>
+            </div>
+            <div class="include-item">
+                <h4>Flexibilidad Total</h4>
+                <p>¿Guardia? 3 días extra automáticos. Sin pedir permiso. El curso se adapta a ti.</p>
+            </div>
+            <div class="include-item">
+                <h4>Certificado</h4>
+                <p>Al completar los 4 retos y presentar tu sistema en el showcase.</p>
+            </div>
+            <div class="include-item">
+                <h4>Track Educador</h4>
+                <p>Si eres docente, cada reto tiene un lente para aplicar con tus alumnos.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== PRICING ====== -->
+<section class="pricing" id="pricing">
+    <div class="container">
+        <h2>Elige tu nivel</h2>
+        <p class="pricing-sub">Pre-venta exclusiva para alumni del workshop. Cohorte fundador.</p>
+
+        <div class="pricing-cards">
+            <!-- ESTANDAR -->
+            <div class="price-card">
+                <div class="price-tier">Estándar</div>
+                <div class="price-amount"><span class="currency">S/</span>397</div>
+                <div class="price-period">pago único &bull; 8 semanas</div>
+                <ul class="price-features">
+                    <li>4 retos completos</li>
+                    <li>4 sesiones live con Javier</li>
+                    <li>Grabaciones de las lives</li>
+                    <li>Comunidad temporal (8 sem)</li>
+                    <li>Templates y prompts</li>
+                    <li>Certificado de completion</li>
+                    <li>Track estudiante o educador</li>
+                </ul>
+                <a href="#" class="cta-btn cta-btn-secondary" onclick="return false;">Inscribirme</a>
+            </div>
+
+            <!-- VIP -->
+            <div class="price-card featured">
+                <div class="price-tier">VIP</div>
+                <div class="price-amount"><span class="currency">S/</span>697</div>
+                <div class="price-period">pago único &bull; 8 semanas</div>
+                <ul class="price-features">
+                    <li>Todo lo del Estándar</li>
+                    <li>Javier revisa TU tutor personalmente</li>
+                    <li>Grupo VIP exclusivo</li>
+                    <li>Acceso permanente a grabaciones</li>
+                    <li>Feedback directo en cada reto</li>
+                    <li>Prioridad en las lives</li>
+                </ul>
+                <a href="#" class="cta-btn" onclick="return false;">Inscribirme VIP</a>
+            </div>
+        </div>
+
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Menos de S/ 100 por reto. Menos de S/ 12 por día. <br>Menos que 1 hora de consulta.</p>
+    </div>
+</section>
+
+<!-- ====== INSTRUCTOR ====== -->
+<section class="instructor">
+    <div class="container">
+        <h2>Tu instructor</h2>
+        <div class="instructor-info">
+            <div class="instructor-name">Dr. Javier Flores-Cohaila</div>
+            <div class="instructor-title">@jaflomd</div>
+            <p class="instructor-bio">
+                Residente de Psiquiatría en el Hospital Víctor Larco Herrera. Investigador. Docente.
+                Usa IA todos los días para estudiar, investigar, escribir papers y enseñar.
+                No vende herramientas &mdash; enseña cómo piensa con ellas.
+            </p>
+            <ul class="instructor-creds">
+                <li>96 personas en su primer workshop, sin ads, en 6 días</li>
+                <li>Investigador con publicaciones en AI + educación médica</li>
+                <li>Creador del método del Tutor Metacognitivo con IA</li>
+                <li>Docente en programas de salud &mdash; conoce la realidad del estudiante de medicina</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ====== FAQ ====== -->
+<section class="faq">
+    <div class="container">
+        <h2>Preguntas frecuentes</h2>
+
+        <div class="faq-item">
+            <div class="faq-q">¿Necesito haber hecho el workshop?</div>
+            <div class="faq-a">Idealmente sí. El curso asume que ya tienes tu tutor básico funcionando. Si no lo hiciste, puedes ponerte al día con la grabación del workshop (incluida para inscripciones tempranas).</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">¿Cuánto tiempo necesito por semana?</div>
+            <div class="faq-a">Los challenges async toman 2-3 horas por semana. Las lives son de 2 horas cada 2 semanas. Total: ~3-4 horas por semana. Si tienes guardia, tienes 3 días extra automáticos.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">¿Qué pasa si no puedo asistir a una live?</div>
+            <div class="faq-a">Todas las lives se graban. Las ves cuando puedas. El único deadline real es entregar tu reto antes de la siguiente live.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">¿Funciona para mi especialidad?</div>
+            <div class="faq-a">Sí. El sistema es agnóstico de especialidad. Cada participante lo personaliza para su área: medicina interna, cirugía, pediatría, psiquiatría, o cualquier otra.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">¿Necesito saber programar?</div>
+            <div class="faq-a">No. Obsidian es una app de notas. Claude CLI se instala en 5 minutos. Te guiamos paso a paso.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">¿Hay devolución?</div>
+            <div class="faq-a">Si después de completar el Reto 1 sientes que no es para ti, te devolvemos el 100%. Sin preguntas.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== FINAL CTA ====== -->
+<section class="final-cta">
+    <div class="container">
+        <div class="urgency">COHORTE FUNDADOR &mdash; CUPOS LIMITADOS</div>
+        <h2>Deja de estudiar más.<br><span style="color: var(--gold);">Empieza a estudiar mejor.</span></h2>
+        <p>8 semanas. 4 retos. Tu sistema completo de estudio con IA.</p>
+        <a href="#pricing" class="cta-btn">Asegura Tu Lugar</a>
+        <span class="cta-price">Pre-venta exclusiva &bull; Cohorte fundador &bull; Abril 2026</span>
+    </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer>
+    <div class="container">
+        <p>&copy; 2026 Dr. Javier Flores-Cohaila &bull; <a href="https://instagram.com/jaflomd" target="_blank">@jaflomd</a></p>
+    </div>
+</footer>
+
+</body>
+</html>
