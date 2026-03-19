@@ -628,6 +628,52 @@
             letter-spacing: 1px;
         }
 
+        /* === COUNTDOWN === */
+        .countdown {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin: 32px 0 40px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-unit {
+            text-align: center;
+            min-width: 70px;
+        }
+
+        .countdown-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--gold);
+            line-height: 1;
+            display: block;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px 16px;
+            min-width: 70px;
+        }
+
+        .countdown-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 8px;
+            display: block;
+        }
+
+        .countdown-sep {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            color: var(--gold);
+            opacity: 0.3;
+            align-self: flex-start;
+            padding-top: 12px;
+        }
+
         /* === FOOTER === */
         footer {
             text-align: center;
@@ -676,6 +722,27 @@
             <div class="hero-stat">
                 <div class="number">8</div>
                 <div class="label">Semanas</div>
+            </div>
+        </div>
+        <div class="countdown" id="hero-countdown">
+            <div class="countdown-unit">
+                <span class="countdown-number" id="hc-days">--</span>
+                <span class="countdown-label">Días</span>
+            </div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit">
+                <span class="countdown-number" id="hc-hours">--</span>
+                <span class="countdown-label">Horas</span>
+            </div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit">
+                <span class="countdown-number" id="hc-mins">--</span>
+                <span class="countdown-label">Min</span>
+            </div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit">
+                <span class="countdown-number" id="hc-secs">--</span>
+                <span class="countdown-label">Seg</span>
             </div>
         </div>
         <a href="#pricing" class="cta-btn">Asegura Tu Lugar</a>
@@ -924,6 +991,27 @@
         <div class="urgency">COHORTE FUNDADOR &mdash; CUPOS LIMITADOS</div>
         <h2>Deja de estudiar más.<br><span style="color: var(--gold);">Empieza a estudiar mejor.</span></h2>
         <p>8 semanas. 4 retos. Tu sistema completo de estudio con IA.</p>
+        <div class="countdown" id="footer-countdown">
+            <div class="countdown-unit">
+                <span class="countdown-number" id="fc-days">--</span>
+                <span class="countdown-label">Días</span>
+            </div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit">
+                <span class="countdown-number" id="fc-hours">--</span>
+                <span class="countdown-label">Horas</span>
+            </div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit">
+                <span class="countdown-number" id="fc-mins">--</span>
+                <span class="countdown-label">Min</span>
+            </div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-unit">
+                <span class="countdown-number" id="fc-secs">--</span>
+                <span class="countdown-label">Seg</span>
+            </div>
+        </div>
         <a href="#pricing" class="cta-btn">Asegura Tu Lugar</a>
         <span class="cta-price">Pre-venta exclusiva &bull; Cohorte fundador &bull; Inicia sábado 18 de abril</span>
     </div>
@@ -936,5 +1024,37 @@
     </div>
 </footer>
 
+<script>
+(function() {
+    // April 18, 2026 at 15:00 Peru time (UTC-5)
+    const target = new Date('2026-04-18T20:00:00Z').getTime();
+
+    function update() {
+        const now = Date.now();
+        const diff = Math.max(0, target - now);
+
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+
+        const pad = n => String(n).padStart(2, '0');
+
+        ['hc', 'fc'].forEach(prefix => {
+            const days = document.getElementById(prefix + '-days');
+            const hours = document.getElementById(prefix + '-hours');
+            const mins = document.getElementById(prefix + '-mins');
+            const secs = document.getElementById(prefix + '-secs');
+            if (days) days.textContent = pad(d);
+            if (hours) hours.textContent = pad(h);
+            if (mins) mins.textContent = pad(m);
+            if (secs) secs.textContent = pad(s);
+        });
+    }
+
+    update();
+    setInterval(update, 1000);
+})();
+</script>
 </body>
 </html>
